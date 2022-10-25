@@ -304,7 +304,7 @@ static void render_logo(void) {     // Render MechWild "MW" Logo
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-    render_logo();
+        render_logo();
         oled_set_cursor(1,6);
            
         // WPM render
