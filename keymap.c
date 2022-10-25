@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "animation_process.h"
-
+#include "standard.h"
 #define FN1_SPC     LT(1, KC_SPC)
 
 // Defines names for use in layer keycodes and the keymap
@@ -286,22 +285,45 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
     return rotation;
 }
-// End of space oled stuff
+
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (!is_keyboard_master()) {
+        return OLED_ROTATION_0;  
+    }
+}
+static void render_logo(void) {     // Render MechWild "MW" Logo
+        static const char PROGMEM logo_1[] = {0x8A, 0x8B, 0x8C, 0x8D, 0x00};
+        static const char PROGMEM logo_2[] = {0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0x00};
+        static const char PROGMEM logo_3[] = {0xCA, 0xCB, 0xCC, 0xCD, 0x00};
+        static const char PROGMEM logo_4[] = {0x20, 0x8E, 0x8F, 0x90, 0x00};
+        oled_set_cursor(0,0);
+        oled_write_P(logo_1, false);
+        oled_set_cursor(0,1);
+        oled_write_P(logo_2, false);
+        oled_set_cursor(0,2);
+        oled_write_P(logo_3, false);
+        oled_set_cursor(0,3);
+        oled_write_P(logo_4, false);
+    }
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
+    render_logo();
+        oled_set_cursor(1,6);
+            // WPM render
 
-    // WPM render
-    oled_set_cursor(1, 0);
-    oled_write_P(PSTR(">"), false);
-    oled_write(get_u8_str(get_current_wpm(), '0'), false);
+        oled_write_P(PSTR(">"), false);
+        oled_write(get_u8_str(get_current_wpm(), '0'), false);
+        }
+        oled_write_ln_P(PSTR(""), false);
+        // Host Keyboard LED Status
+        led_t led_state = host_keyboard_led_state();
+        oled_write_ln_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+        oled_write_ln_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+        oled_write_ln_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
+        return false;
+    }
 
-    // Host Keyboard LED Status
-    led_t led_state = host_keyboard_led_state();
-    oled_set_cursor(0,2);
-    oled_write_P(led_state.caps_lock  ? PSTR("CPSLK") :"    ", true);
-    oled_set_cursor(0,3);
-    oled_write_P(led_state.scroll_lock ? PSTR("SCR") :"    ", true);
     } else {
         render_space(); // Call this to render the space stuff on the one screen
     }
