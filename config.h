@@ -1,0 +1,2 @@
+#define MASTER_LEFT
+#define NO_ACTION_ONESHOT
