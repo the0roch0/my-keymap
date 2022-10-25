@@ -286,11 +286,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return rotation;
 }
 
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    if (!is_keyboard_master()) {
-        return OLED_ROTATION_0;  
-    }
-}
+
 static void render_logo(void) {     // Render MechWild "MW" Logo
         static const char PROGMEM logo_1[] = {0x8A, 0x8B, 0x8C, 0x8D, 0x00};
         static const char PROGMEM logo_2[] = {0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0x00};
@@ -314,7 +310,7 @@ bool oled_task_user(void) {
 
         oled_write_P(PSTR(">"), false);
         oled_write(get_u8_str(get_current_wpm(), '0'), false);
-        }
+        
         oled_write_ln_P(PSTR(""), false);
         // Host Keyboard LED Status
         led_t led_state = host_keyboard_led_state();
@@ -322,7 +318,6 @@ bool oled_task_user(void) {
         oled_write_ln_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
         oled_write_ln_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
         return false;
-    }
 
     } else {
         render_space(); // Call this to render the space stuff on the one screen
