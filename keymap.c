@@ -306,10 +306,9 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
     render_logo();
         oled_set_cursor(1,6);
+           
             // WPM render
-
-        oled_write_P(PSTR(">"), false);
-        oled_write(get_u8_str(get_current_wpm(), '0'), false);
+        oled_write(get_u8_str(get_current_wpm()), false);
         
         oled_write_ln_P(PSTR(""), false);
         // Host Keyboard LED Status
