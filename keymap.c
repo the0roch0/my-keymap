@@ -411,7 +411,7 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
         oled_on();
         anim_sleep = timer_read32();
     } else if (timer_elapsed32(anim_sleep) > OLED_TIMEOUT) {
-        oled_off();
+        OLED_BRIGHTNESS = 0;
     }
 }
 
