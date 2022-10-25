@@ -1,5 +1,5 @@
 ENCODER_MAP_ENABLE = yes
-EXTRAFLAGS += -flto
+LTO_ENABLE = yes
 WPM_ENABLE	= yes
 SPLIT_KEYBOARD = yes        # Define split functionality
 RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
